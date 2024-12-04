@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klick klick</title>
+    <style>
+        body {
+            font-family: BANGERS, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #clickButton {
+            padding: 20px 40px;
+            font-size: 24px;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #clickButton:hover {
+            background-color: #218838;
+        }
+        #resetButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #resetButton:hover {
+            background-color: #c82333;
+        }
+        #score, #upgradeInfo {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #upgradeButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #upgradeButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Klick klick</h1>
+    <p>Klicka på knappen för att samla poäng och köp uppgraderingar!</p>
+    <button id="clickButton">Klicka mig!</button>
+    <p id="score">Poäng: 0</p>
+    <button id="resetButton">Återställ</button>
+
+    <div id="upgradeInfo">
+        <p>Uppgradering kostar: <span id="upgradeCost">50</span> poäng</p>
+        <button id="upgradeButton">Köp uppgradering</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let pointsPerClick = 1;  // Startvärde för poäng per klick
+        let upgradeCost = 50;    // Startkostnad för uppgradering
+        let upgradeLevel = 0;    // Håller koll på hur många uppgraderingar vi har köpt
+
+        const scoreDisplay = document.getElementById("score");
+        const clickButton = document.getElementById("clickButton");
+        const resetButton = document.getElementById("resetButton");
+        const upgradeButton = document.getElementById("upgradeButton");
+        const upgradeCostDisplay = document.getElementById("upgradeCost");
+
+        // Klicka på knappen och samla poäng
+        clickButton.addEventListener("click", () => {
+            score += pointsPerClick;
+            scoreDisplay.textContent = `Poäng: ${score}`;
+        });
+
+        // Återställ spelet
+        resetButton.addEventListener("click", () => {
+            score = 0;
+            pointsPerClick = 1;  // Återställ poäng per klick till 1
+            upgradeCost = 50;    // Återställ uppgraderingskostnad
+            upgradeLevel = 0;    // Återställ uppgraderingsnivå
+            scoreDisplay.textContent = `Poäng: ${score}`;
+            upgradeCostDisplay.textContent = `Uppgradering kostar: ${upgradeCost} poäng`;
+            upgradeButton.disabled = false;  // Aktivera uppgraderingsknappen igen
+        });
+
+        // Köp uppgradering
+        upgradeButton.addEventListener("click", () => {
+            if (score >= upgradeCost) {
+                // Ta bort poäng för uppgraderingen
+                score -= upgradeCost;
+                pointsPerClick += 1;  // Öka poängen per klick (t.ex. från 1 till 2)
+                upgradeLevel++;  // Öka uppgraderingsnivån
+
+                // Öka kostnaden för nästa uppgradering
+                upgradeCost = 50 * (upgradeLevel + 1);  // Varje uppgradering blir dyrare
+                upgradeCostDisplay.textContent = `Uppgradering kostar: ${upgradeCost} poäng`;
+
+                // Uppdatera poängdisplay
+                scoreDisplay.textContent = `Poäng: ${score}`;
+            } else {
+                alert("Du har inte tillräckligt med poäng för att köpa uppgradering!");
+            }
+        });
+    </script>
+</body>
+</html>
